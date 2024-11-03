@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMas Buddy - Christmas Countdown Bot</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-snow"></script> <!-- Add the snow library -->
+  <style>
+    /* Loading Animation */
+    .spin {
+      animation: spin 3s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .fade-out {
+      animation: fadeOut 1s forwards;
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    /* Button Styling */
+    .btn {
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      font-weight: bold;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+      background-color: rgba(255, 255, 255, 1);
+    }
+  </style>
+</head>
+<body class="bg-red-200 text-gray-800 relative overflow-y-auto">
+
+  <!-- Loading Animation -->
+  <div id="loading" class="fixed inset-0 flex items-center justify-center bg-red-700 z-50">
+    <img src="spinner.png" alt="XMas Buddy Logo" class="w-48 h-48 spin">
+  </div>
+
+  <!-- Main Content -->
+  <div id="content" class="hidden">
+
+    <!-- Hero Section -->
+    <section class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-red-700 to-red-600 text-white text-center px-4">
+      <h1 class="text-5xl font-extrabold mb-4 tracking-wide">🎄 XMas Buddy 🎄</h1>
+      <p class="text-xl mb-8 max-w-md">Your daily dose of Christmas cheer with countdowns & festive facts!</p>
+      <div class="flex space-x-4">
+        <a href="https://discord.com/oauth2/authorize?client_id=1302607892905594941&permissions=377957136384&integration_type=0&scope=bot" 
+           class="btn px-5 py-3 rounded shadow-lg"
+           target="_blank">
+           ➕ Add to Discord
+        </a>
+        <a href="#countdown" 
+           class="btn px-5 py-3 rounded shadow-lg">
+           🎁 Check Countdown
+        </a>
+      </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section id="countdown" class="flex flex-col items-center py-16 bg-white text-gray-800">
+      <h2 class="text-4xl font-bold mb-6 text-red-700">Days Until Christmas 🎅</h2>
+      <div id="countdown-timer" class="text-3xl font-semibold bg-gray-100 text-red-700 p-6 rounded shadow-lg">
+        Loading countdown...
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript for Loading Animation, Snow Effect, and Countdown Timer -->
+  <script>
+    // Initialize the canvas-snow effec
+
+    // Loading Animation
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        document.getElementById("loading").classList.add("fade-out");
+        document.getElementById("content").classList.remove("hidden");
+      }, 1500); // Show loading for 1.5 seconds
+    });
+
+    // Countdown Timer Logic
+    function updateCountdown() {
+      const today = new Date();
+      const xmasDate = new Date(today.getFullYear(), 11, 24); // December 24th
+
+      if (today > xmasDate) {
+        xmasDate.setFullYear(today.getFullYear() + 1);
+      }
+
+      const timeDifference = xmasDate - today;
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+      document.getElementById('countdown-timer').innerText = 
+        `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds left till Christmas! 🎄`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+<script src="https://app.embed.im/snow.js" defer></script>
+</body>
+</html>
